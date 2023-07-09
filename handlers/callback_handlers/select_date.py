@@ -3,7 +3,6 @@ from loguru import logger
 import datetime
 from database import add_to_bd
 from utils.find_hotel import find_hotel
-from utils.show_data import print_data
 from handlers.custom_handlers.custom import my_calendar
 from keyboards.calendar.create_calendar import Calendar, check_month_day
 from states.hotel_information import HotelInfoState

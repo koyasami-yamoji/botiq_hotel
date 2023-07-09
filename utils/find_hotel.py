@@ -51,7 +51,7 @@ def find_hotel(message, data) -> None:
 
 	url = "https://hotels4.p.rapidapi.com/properties/v2/list"
 	response_hotels = api_request('POST', url, payload)
-	logger.info(f'Сервер вернул ответ {response_hotels.status_code}. User_id {message.chat.id}')
+	logger.info(f'Сервер вернул ответ {response_hotels.status_code}. User_id {message.message.chat.id}')
 
 	if response_hotels.status_code == 200:
 		hotels = get_hotels(response_hotels.text, data['command'], data['min_distance'], data['max_distance'])
@@ -72,7 +72,8 @@ def find_hotel(message, data) -> None:
 				}
 				summary_url = "https://hotels4.p.rapidapi.com/properties/v2/get-summary"
 				summary_response = api_request("POST", url=summary_url, params=payload)
-				logger.info(f'Сервер вернул ответ статус запроса {summary_response.status_code}. User_id {message.chat.id}')
+				logger.info(f'Сервер вернул ответ статус запроса {summary_response.status_code}.'
+							f' User_id {message.message.chat.id}')
 				if summary_response.status_code == 200:
 					summary_info = hotel_info(summary_response.text)
 					caption = f"Название отеля: {hotel['name']}.\n" \
@@ -90,7 +91,7 @@ def find_hotel(message, data) -> None:
 						hotel['id']: {
 							'name': hotel['name'],
 							'address': summary_info['address'],
-							'user_id': message.chat.id,
+							'user_id': message.message.chat.id,
 							'price': hotel['price'],
 							'distance': round(hotel['distance'], 2),
 							'date_time': data['date_time'],
@@ -104,11 +105,11 @@ def find_hotel(message, data) -> None:
 						for num, url in enumerate(images_url):
 							medias.append(InputMediaPhoto(media=url))
 
-						logger.info(f'Вывод в чат информацию о отеле. User_id {message.chat.id}')
+						logger.info(f'Вывод в чат информацию о отеле. User_id {message.message.chat.id}')
 						bot.send_message(message.chat.id, caption)
 						bot.send_media_group(message.chat.id, media=medias)
 					else:
-						logger.info(f'Вывод в чат информацию о отеле. User_id {message.chat.id}')
+						logger.info(f'Вывод в чат информацию о отеле. User_id {message.message.chat.id}')
 						bot.send_message(message.chat.id, caption)
 				else:
 					logger.error(f'Что-то пошло не так. Код ошибки {response_hotels.status_code}')

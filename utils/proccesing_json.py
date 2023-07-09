@@ -33,6 +33,8 @@ def get_hotels(response_text: str, command: str, min_distance: str, max_distance
 	:return: Dict Отсортированный словарь с данными об отелях.
 	"""
 	data = json.loads(response_text)
+	with open('response.json', 'w') as file:
+		json.dump(data, file, indent=4)
 	if not data:
 		raise LookupError('Запрос пуст')
 
